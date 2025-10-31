@@ -1,40 +1,86 @@
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { useState } from "react";
-import theme from "../../theme";
+import {
+  DarkModeOutlined,
+  LightModeOutlined,
+  SettingsBrightnessOutlined,
+} from "@mui/icons-material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  useColorScheme,
+} from "@mui/material";
+import theme from "~/theme";
 
 const ModeSelect = () => {
-  const [age, setAge] = useState("");
+  const { mode, setMode } = useColorScheme();
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setMode(event.target.value);
   };
+
   return (
-    <>
-      <Box
-        sx={{
-          backgroundColor: "primary.main",
-          height: theme.trello.appBarHeight,
-        }}
-      >
-        <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-          <InputLabel id="demo-select-small-label">Age</InputLabel>
-          <Select
-            labelId="demo-select-small-label"
-            id="demo-select-small"
-            value={age}
-            label="Age"
-            onChange={handleChange}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
-    </>
+    <Box
+      sx={{
+        height: theme.trello.appBarHeight,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        p: 1,
+      }}
+    >
+      <FormControl size="small">
+        <InputLabel id="label-select-dark-light-mode">Mode</InputLabel>
+        <Select
+          labelId="label-select-dark-light-mode"
+          id="select-dark-light-mode"
+          value={mode || "light"}
+          label="Mode"
+          onChange={handleChange}
+        >
+          <MenuItem value="light">
+            <Box
+              display="flex"
+              alignItems="center"
+              sx={{ color: "primary.main" }}
+            >
+              <LightModeOutlined
+                fontSize="small"
+                sx={{ mr: 1, color: "primary.main" }}
+              />{" "}
+              Light
+            </Box>
+          </MenuItem>
+          <MenuItem value="dark">
+            <Box
+              display="flex"
+              alignItems="center"
+              sx={{ color: "primary.main" }}
+            >
+              <DarkModeOutlined
+                fontSize="small"
+                sx={{ mr: 1, color: "primary.main" }}
+              />{" "}
+              Dark
+            </Box>
+          </MenuItem>
+          <MenuItem value="system">
+            <Box
+              display="flex"
+              alignItems="center"
+              sx={{ color: "primary.main" }}
+            >
+              <SettingsBrightnessOutlined
+                fontSize="small"
+                sx={{ mr: 1, color: "primary.main" }}
+              />{" "}
+              System
+            </Box>
+          </MenuItem>
+        </Select>
+      </FormControl>
+    </Box>
   );
 };
 

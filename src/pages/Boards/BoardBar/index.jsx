@@ -6,7 +6,7 @@ export default function BoardBar() {
     <>
       <Box
         sx={{
-          backgroundColor: "primary.dark",
+          backgroundColor: "primary.main",
           width: "100%",
           height: () => theme.trello.boardBarHeight,
           display: "flex",
