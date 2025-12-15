@@ -31,23 +31,39 @@ const ModeSelect = () => {
       }}
     >
       <FormControl size="small">
-        <InputLabel id="label-select-dark-light-mode">Mode</InputLabel>
+        <InputLabel
+          sx={{
+            color: "white",
+            "&.Mui-focused": { color: "primary.main" },
+            "&.Mui-selected": { color: "primary.main" },
+          }}
+          id="label-select-dark-light-mode"
+        >
+          Mode
+        </InputLabel>
         <Select
           labelId="label-select-dark-light-mode"
           id="select-dark-light-mode"
           value={mode || "light"}
           label="Mode"
           onChange={handleChange}
+          sx={{
+            color: "white",
+            ".MuiOutlinedInput-notchedOutline": { borderColor: "white" },
+            "&:hover .MuiOutlinedInput-notchedOutline": {
+              borderColor: "white",
+            },
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "white",
+            },
+            "& .MuiSvgIcon-root": { color: "white" },
+          }}
         >
           <MenuItem value="light">
-            <Box
-              display="flex"
-              alignItems="center"
-              sx={{ color: "primary.main" }}
-            >
+            <Box display="flex" alignItems="center" sx={{ color: "white" }}>
               <LightModeOutlined
                 fontSize="small"
-                sx={{ mr: 1, color: "primary.main" }}
+                sx={{ mr: 1, color: "primary.secondary" }}
               />{" "}
               Light
             </Box>
@@ -56,11 +72,11 @@ const ModeSelect = () => {
             <Box
               display="flex"
               alignItems="center"
-              sx={{ color: "primary.main" }}
+              sx={{ color: "primary.secondary" }}
             >
               <DarkModeOutlined
                 fontSize="small"
-                sx={{ mr: 1, color: "primary.main" }}
+                sx={{ mr: 1, color: "primary.secondary" }}
               />{" "}
               Dark
             </Box>
@@ -69,11 +85,11 @@ const ModeSelect = () => {
             <Box
               display="flex"
               alignItems="center"
-              sx={{ color: "primary.main" }}
+              sx={{ color: "primary.secondary" }}
             >
               <SettingsBrightnessOutlined
                 fontSize="small"
-                sx={{ mr: 1, color: "primary.main" }}
+                sx={{ mr: 1, color: "primary.secondary" }}
               />{" "}
               System
             </Box>

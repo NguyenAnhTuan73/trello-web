@@ -1,18 +1,18 @@
-import { Container, CssBaseline, ThemeProvider } from "@mui/material";
-import AppBar from "~/components/AppBar";
-import BoardBar from "~/pages/Boards/BoardBar";
-import BoardContent from "./BoardConent/index";
-import lightTheme from "~/theme";
+import { Container, ThemeProvider } from "@mui/material";
+import AppBar from "~/components/AppBar/AppBar";
+import BoardBar from "~/pages/Boards/BoardBar/BoardBar";
+import BoardContent from "./BoardConent/BoardContent";
+import theme from "~/theme";
+import { mockData } from "~/apis/mock-data";
 
 function Board() {
   return (
     <>
-      <ThemeProvider theme={lightTheme}>
-        <CssBaseline />
+      <ThemeProvider theme={theme} defaultMode="system">
         <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
           <AppBar />
-          <BoardBar />
-          <BoardContent />
+          <BoardBar board={mockData.board} />
+          <BoardContent board={mockData.board} />
         </Container>
       </ThemeProvider>
     </>

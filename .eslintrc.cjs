@@ -1,31 +1,40 @@
 module.exports = {
   root: true,
   env: { browser: true, node: true, es2024: true },
-  extends: [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-    "plugin:react/jsx-runtime",
-  ],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    requireConfigFile: false,
-    babelOptions: { presets: ["@babel/preset-react"] },
     ecmaVersion: "latest",
     sourceType: "module",
     ecmaFeatures: { jsx: true },
   },
-  plugins: ["react", "react-hooks", "react-refresh"],
+  plugins: ["react", "react-hooks", "@typescript-eslint", "react-refresh"],
+  extends: [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/jsx-runtime",
+  ],
   rules: {
     "no-undef": "error",
-    "no-unused-vars": [
-      "error",
-      { vars: "all", args: "after-used", ignoreRestSiblings: false },
+
+    // 🔥 Tắt rule gốc để tránh xung đột
+    "no-unused-vars": "off",
+
+    // 🔥 Muốn không báo lỗi unused imports → set "off" hoặc "warn"
+    "@typescript-eslint/no-unused-vars": [
+      "warn", // hoặc "off"
+      {
+        vars: "all",
+        args: "after-used",
+        ignoreRestSiblings: true,
+      },
     ],
 
     "no-console": "warn",
     "react/jsx-no-undef": "error",
     "react/react-in-jsx-scope": "off",
-    // "react-refresh/only-export-components": "warn",
+    "react/prop-types": "off",
   },
   settings: { react: { version: "detect" } },
 };

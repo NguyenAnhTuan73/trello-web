@@ -35,6 +35,7 @@ function Workspaces() {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
         endIcon={<ExpandMoreIcon />}
+        sx={{ color: "white" }}
       >
         Workspaces
       </Button>
@@ -49,9 +50,6 @@ function Workspaces() {
           },
         }}
       >
-        {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem> */}
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <ContentCut fontSize="small" />
