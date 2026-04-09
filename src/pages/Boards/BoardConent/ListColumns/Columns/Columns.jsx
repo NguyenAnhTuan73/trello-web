@@ -26,12 +26,20 @@ import { CSS } from "@dnd-kit/utilities";
 
 const Columns = ({ column }) => {
   const [anchorEl, setAnchorEl] = useState(null);
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: column._id, data: { ...column } });
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: column._id, data: { ...column } });
 
   const dndKitStyles = {
     transform: CSS.Translate.toString(transform),
     transition,
+    height: "100%",
+    opacity: isDragging ? 0.5 : undefined,
     // touchAction: "none",
   };
   const open = Boolean(anchorEl);
@@ -42,11 +50,8 @@ const Columns = ({ column }) => {
     setAnchorEl(null);
   };
   return (
-    <>
+    <div ref={setNodeRef} style={dndKitStyles} {...attributes}>
       <Box
-        ref={setNodeRef}
-        style={dndKitStyles}
-        {...attributes}
         {...listeners}
         sx={{
           minWidth: "300px",
@@ -158,7 +163,7 @@ const Columns = ({ column }) => {
           </Box>
         </Box>
         {/* box list card */}
-        <ListCards />
+        <ListCards cards={column.cards} />
 
         {/* box footer */}
         <Box
@@ -176,7 +181,7 @@ const Columns = ({ column }) => {
           </Tooltip>
         </Box>
       </Box>
-    </>
+    </div>
   );
 };
 

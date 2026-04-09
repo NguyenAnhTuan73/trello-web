@@ -22,9 +22,7 @@ export default function BoardBar(props) {
   const key = "id";
   function fastSort(list, order, key) {
     const map = new Map(list.map((item) => [item[key], item]));
-    console.log("🚀 ~ fastSort ~ map:", map);
-    const check = order.map((id) => map.get(id));
-    console.log("🚀 ~ fastSort ~ check:", check);
+
     return order.map((id) => map.get(id));
   }
   useEffect(() => {
@@ -65,16 +63,18 @@ export default function BoardBar(props) {
             gap: 2,
           }}
         >
-          <Chip
-            sx={MENU_STYLE}
-            icon={<DashboardIcon />}
-            label={board.title || "Board Title"}
-            clickable
-          />
+          <Tooltip title={board?.title}>
+            <Chip
+              sx={MENU_STYLE}
+              icon={<DashboardIcon />}
+              label={board?.title || "Board Title"}
+              clickable
+            />
+          </Tooltip>
           <Chip
             sx={MENU_STYLE}
             icon={<VpnLockIcon />}
-            label={capitalizeFirstLetter(board.type || "public")}
+            label={capitalizeFirstLetter(board?.type || "public")}
             clickable
           />
           <Chip

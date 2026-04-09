@@ -111,14 +111,16 @@ function AppBar() {
                 </InputAdornment>
               ),
               endAdornment: (
-                <CloseIcon
-                  fontSize="small"
-                  sx={{
-                    cursor: "pointer",
-                    color: searchValue ? "white" : "transparent",
-                  }}
-                  onClick={() => setSearchValue("")}
-                />
+                <InputAdornment position="end">
+                  <CloseIcon
+                    fontSize="small"
+                    sx={{
+                      cursor: "pointer",
+                      color: searchValue ? "white" : "transparent",
+                    }}
+                    onClick={() => setSearchValue("")}
+                  />
+                </InputAdornment>
               ),
             }}
             sx={{
