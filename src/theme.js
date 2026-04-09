@@ -88,19 +88,30 @@ const theme = extendTheme({
       palette: {
         mode: "light",
         primary: { main: "#2980b9", secondary: "#1976d2", text: "#fff" },
-
-        background: { default: "#ffffff", paper: "#ffffff" },
+        warning: {
+          main: "#ed6c02", // cam chuẩn (Material UI default)
+          light: "#ff9800", // sáng hơn (hover/background nhẹ)
+          dark: "#e65100", // đậm hơn (active)
+          contrastText: "#fff", // chữ trên nền warning
+        },
+        background: { main: "#ebecf0", paper: "#ffffff" },
       },
     },
     dark: {
       palette: {
         mode: "dark",
         primary: { main: "#34495e", secondary: "#fff", text: "#fff" },
-
-        background: { default: "#121212", paper: "#1e1e1e" },
+        warning: {
+          main: "#ffa726", // cam sáng hơn để nổi trên nền tối
+          light: "#ffb74d",
+          dark: "#f57c00",
+          contrastText: "#000", // dark mode thường dùng chữ đen trên màu sáng
+        },
+        background: { main: "#121212", paper: "#1e1e1e" },
       },
     },
   },
 });
 
 export default theme;
+// "#333643" : "#ebecf0",

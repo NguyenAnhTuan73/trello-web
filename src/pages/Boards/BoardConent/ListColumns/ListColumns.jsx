@@ -19,6 +19,7 @@ export const ListColumns = ({ columns }) => {
     }
     console.log(newColumnTitle);
     toggleOpen();
+    setNewColumnTitle("");
   };
 
   return (
@@ -83,7 +84,7 @@ export const ListColumns = ({ columns }) => {
           >
             <TextField
               id="outlined-search"
-              label="Enter column title..."
+              label="New column"
               variant="outlined"
               value={newColumnTitle}
               autoFocus

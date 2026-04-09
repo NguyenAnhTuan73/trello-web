@@ -18,7 +18,7 @@ export const ListCards = ({ cards }) => {
             display: "flex",
             flexDirection: "column",
             gap: 1,
-            p: "0 5px",
+            p: "0 5px 5px 5px",
             m: "0 5px",
             maxHeight: `calc(${theme.trello.boardContentHeight} - ${
               theme.trello.columnHeaderHeight

@@ -1,11 +1,15 @@
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import {
   Cloud,
   ContentCopy,
   ContentCut,
   ContentPaste,
   DragHandleOutlined,
+  NoteAddOutlined,
 } from "@mui/icons-material";
 import AddCardIcon from "@mui/icons-material/AddCard";
+import CloseIcon from "@mui/icons-material/Close";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
@@ -14,6 +18,7 @@ import {
   Divider,
   Menu,
   MenuItem,
+  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -21,8 +26,6 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useState } from "react";
 import { ListCards } from "~/pages/Boards/BoardConent/ListColumns/Columns/ListCards/ListCards";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 
 const Columns = ({ column }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -49,6 +52,20 @@ const Columns = ({ column }) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const [openNewCard, setOpenNewCard] = useState(false);
+  const [newCardTitle, setNewCardTitle] = useState("");
+  const handleToggleOpenCard = () => setOpenNewCard(!openNewCard);
+
+  const handleAddColumn = () => {
+    if (!newCardTitle) {
+      return;
+    }
+    console.log(newCardTitle);
+    handleToggleOpenCard();
+    setNewCardTitle("");
+  };
+
   return (
     <div ref={setNodeRef} style={dndKitStyles} {...attributes}>
       <Box
@@ -56,8 +73,7 @@ const Columns = ({ column }) => {
         sx={{
           minWidth: "300px",
           maxWidth: "300px",
-          bgcolor: (theme) =>
-            theme.palette.mode === "dark" ? "#333643" : "#ebecf0",
+          bgcolor: "background.main",
           ml: 2,
           borderRadius: "6px",
           height: "fit-content",
@@ -166,20 +182,99 @@ const Columns = ({ column }) => {
         <ListCards cards={column.cards} />
 
         {/* box footer */}
-        <Box
-          sx={{
-            height: (theme) => theme.trello.columnFooterHeight,
-            p: 2,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Button startIcon={<AddCardIcon />}>Add new card</Button>
-          <Tooltip title="Drag to move">
-            <DragHandleOutlined sx={{ cursor: "pointer" }} />
-          </Tooltip>
-        </Box>
+
+        {openNewCard ? (
+          <Box
+            sx={{
+              minWidth: "250px",
+
+              p: 1,
+              borderRadius: "6px",
+              height: "100%",
+              bgcolor: "#ffffff3d",
+              display: "flex",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <TextField
+              id="outlined-search"
+              label="New Card"
+              variant="outlined"
+              value={newCardTitle}
+              autoFocus
+              type="text"
+              size="small"
+              onChange={(e) => setNewCardTitle(e.target.value)}
+              sx={{
+                width: "100%",
+                marginBottom: 1,
+                color: "primary.secondary",
+                "& label": { color: "primary.secondary" },
+                "& label.Mui-focused": { color: "primary.secondary" },
+                "& input": { color: "primary.secondary" },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: "primary.secondary ",
+                  },
+                  "&:hover fieldset": {
+                    borderColor: "primary.secondary ",
+                  },
+                },
+              }}
+              // sx={{ border: "1px solid", borderColor: "primary.main" }}
+            />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              <Button
+                variant="contained"
+                size="small"
+                startIcon={<NoteAddOutlined />}
+                sx={{
+                  boxShadow: "none",
+                  border: "0.5px soild ",
+
+                  justifyContent: "flex-start",
+                }}
+                onClick={handleAddColumn}
+              >
+                Add
+              </Button>
+              <CloseIcon
+                fontSize="small"
+                sx={{
+                  cursor: "pointer",
+                  color: "warning.main",
+                  "&:hover": { color: "warning.light" },
+                  transition: "color 0.15s linear",
+                }}
+                onClick={handleToggleOpenCard}
+              />
+            </Box>
+          </Box>
+        ) : (
+          <Box
+            sx={{
+              height: (theme) => theme.trello.columnFooterHeight,
+              p: 2,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button onClick={handleToggleOpenCard} startIcon={<AddCardIcon />}>
+              Add new card
+            </Button>
+            <Tooltip title="Drag to move">
+              <DragHandleOutlined sx={{ cursor: "pointer" }} />
+            </Tooltip>
+          </Box>
+        )}
       </Box>
     </div>
   );
