@@ -1,33 +1,36 @@
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import VpnLockIcon from "@mui/icons-material/VpnLock";
-import { Avatar, AvatarGroup, Box, Button, Chip, Tooltip } from "@mui/material";
+import DashboardIcon from "@mui/icons-material/Dashboard"
+import VpnLockIcon from "@mui/icons-material/VpnLock"
+import { Avatar, AvatarGroup, Box, Button, Chip, Tooltip } from "@mui/material"
 
-import AddToDriveIcon from "@mui/icons-material/AddToDrive";
-import BoltIcon from "@mui/icons-material/Bolt";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { useEffect } from "react";
-import theme from "~/theme";
-import { capitalizeFirstLetter } from "~/utils/formatters";
+import AddToDriveIcon from "@mui/icons-material/AddToDrive"
+import BoltIcon from "@mui/icons-material/Bolt"
+import FilterListIcon from "@mui/icons-material/FilterList"
+import PersonAddIcon from "@mui/icons-material/PersonAdd"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import theme from "~/theme"
+import { capitalizeFirstLetter } from "~/utils/formatters"
 
 export default function BoardBar(props) {
-  const { board } = props;
+  // const { board } = props;
+  const board = useSelector((state) => state.board.boards)
+
   const originOrderItems = [
     { id: "item-1", content: "Item 1" },
     { id: "item-2", content: "Item 2" },
     { id: "item-3", content: "Item 3" },
     { id: "item-4", content: "Item 4" },
-  ];
-  const itemOrderId = ["item-1", "item-4", "item-3", "item-2"];
-  const key = "id";
+  ]
+  const itemOrderId = ["item-1", "item-4", "item-3", "item-2"]
+  const key = "id"
   function fastSort(list, order, key) {
-    const map = new Map(list.map((item) => [item[key], item]));
+    const map = new Map(list.map((item) => [item[key], item]))
 
-    return order.map((id) => map.get(id));
+    return order.map((id) => map.get(id))
   }
   useEffect(() => {
-    fastSort(originOrderItems, itemOrderId, key);
-  }, []);
+    fastSort(originOrderItems, itemOrderId, key)
+  }, [])
   const MENU_STYLE = {
     color: "white",
     bgcolor: "transparent",
@@ -36,7 +39,7 @@ export default function BoardBar(props) {
     borderRadius: "4px",
     "& .MuiSvgIcon-root": { fontSize: "20px", color: "white" },
     "&:hover": { bgcolor: "primary.50" },
-  };
+  }
   return (
     <>
       <Box
@@ -141,5 +144,5 @@ export default function BoardBar(props) {
         </Box>
       </Box>
     </>
-  );
+  )
 }

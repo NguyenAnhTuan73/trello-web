@@ -34,7 +34,7 @@ export const mockData = {
             title: "Title of card 01",
             description: "Markdown Syntax (sẽ ở khóa nâng cao nhé)",
             cover:
-              "https://trungquandev.com/wp-content/uploads/2022/07/fair-mern-stack-advanced-banner-trungquandev.jpg",
+              "https://res.cloudinary.com/dxfq3iotg/image/upload/v1591168712/trello-clone/markdown-card-cover_foy1l9.png",
             memberIds: ["test-user-id-01"],
             comments: ["test comment 01", "test comment 02"],
             attachments: [
@@ -215,4 +215,4 @@ export const mockData = {
       },
     ],
   },
-};
+}

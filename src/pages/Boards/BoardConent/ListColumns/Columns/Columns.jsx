@@ -1,5 +1,5 @@
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 import {
   Cloud,
   ContentCopy,
@@ -7,11 +7,11 @@ import {
   ContentPaste,
   DragHandleOutlined,
   NoteAddOutlined,
-} from "@mui/icons-material";
-import AddCardIcon from "@mui/icons-material/AddCard";
-import CloseIcon from "@mui/icons-material/Close";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+} from "@mui/icons-material"
+import AddCardIcon from "@mui/icons-material/AddCard"
+import CloseIcon from "@mui/icons-material/Close"
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever"
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore"
 import {
   Box,
   Button,
@@ -21,14 +21,19 @@ import {
   TextField,
   Tooltip,
   Typography,
-} from "@mui/material";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useState } from "react";
-import { ListCards } from "~/pages/Boards/BoardConent/ListColumns/Columns/ListCards/ListCards";
+} from "@mui/material"
+import ListItemIcon from "@mui/material/ListItemIcon"
+import ListItemText from "@mui/material/ListItemText"
+import { useCallback, useState } from "react"
+import { useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import { createNewCardAPI } from "~/apis/cards"
+import { ListCards } from "~/pages/Boards/BoardConent/ListColumns/Columns/ListCards/ListCards"
 
-const Columns = ({ column }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
+const Columns = ({ column, createNewCard }) => {
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [orderedCards, setOrderedCards] = useState(column?.cards || [])
+
   const {
     attributes,
     listeners,
@@ -36,7 +41,8 @@ const Columns = ({ column }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: column._id, data: { ...column } });
+  } = useSortable({ id: column?._id, data: { ...column } })
+  const boardId = useSelector((state) => state.board.boardId)
 
   const dndKitStyles = {
     transform: CSS.Translate.toString(transform),
@@ -44,27 +50,55 @@ const Columns = ({ column }) => {
     height: "100%",
     opacity: isDragging ? 0.5 : undefined,
     // touchAction: "none",
-  };
-  const open = Boolean(anchorEl);
+  }
+  const open = Boolean(anchorEl)
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
-  const [openNewCard, setOpenNewCard] = useState(false);
-  const [newCardTitle, setNewCardTitle] = useState("");
-  const handleToggleOpenCard = () => setOpenNewCard(!openNewCard);
+  const [openNewCard, setOpenNewCard] = useState(false)
+  const [newCardTitle, setNewCardTitle] = useState("")
+  const handleToggleOpenCard = () => setOpenNewCard(!openNewCard)
 
-  const handleAddColumn = () => {
+  const handleAddCard = async () => {
     if (!newCardTitle) {
-      return;
+      toast.error("Please enter Card Title!", {
+        position: "bottom-right",
+        autoClose: 2000,
+      })
+
+      return
     }
-    console.log(newCardTitle);
-    handleToggleOpenCard();
-    setNewCardTitle("");
-  };
+    const dataNewCard = {
+      title: newCardTitle,
+      columnId: column._id,
+      boardId: boardId,
+    }
+
+    try {
+      await createNewCard(dataNewCard)
+      handleToggleOpenCard()
+
+      setNewCardTitle("")
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  // const createNewCard = async (dataNewCard) => {
+  //   const response = await createNewCardAPI(dataNewCard)
+  //   if (response.statusCode === 201) {
+  //     toast.success(response.message, {
+  //       position: "bottom-right",
+  //     })
+  //   }
+  //   return response
+  // }
+  const handleChangeTitle = useCallback((e) => {
+    setNewCardTitle(e.target.value)
+  }, [])
 
   return (
     <div ref={setNodeRef} style={dndKitStyles} {...attributes}>
@@ -97,7 +131,7 @@ const Columns = ({ column }) => {
               cursor: "pointer",
             }}
           >
-            {column.title}
+            {column?.title || ""}
           </Typography>
           <Box>
             <Tooltip title="More Options">
@@ -179,7 +213,7 @@ const Columns = ({ column }) => {
           </Box>
         </Box>
         {/* box list card */}
-        <ListCards cards={column.cards} />
+        <ListCards cards={orderedCards || []} />
 
         {/* box footer */}
 
@@ -202,13 +236,15 @@ const Columns = ({ column }) => {
               label="New Card"
               variant="outlined"
               value={newCardTitle}
+              data-no-dnd="true"
               autoFocus
               type="text"
               size="small"
-              onChange={(e) => setNewCardTitle(e.target.value)}
+              onChange={(e) => handleChangeTitle(e)}
+              // onChange={(e) => setNewCardTitle(e.target.value)}
               sx={{
                 width: "100%",
-                marginBottom: 1,
+
                 color: "primary.secondary",
                 "& label": { color: "primary.secondary" },
                 "& label.Mui-focused": { color: "primary.secondary" },
@@ -241,7 +277,7 @@ const Columns = ({ column }) => {
 
                   justifyContent: "flex-start",
                 }}
-                onClick={handleAddColumn}
+                onClick={handleAddCard}
               >
                 Add
               </Button>
@@ -277,7 +313,7 @@ const Columns = ({ column }) => {
         )}
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default Columns;
+export default Columns

@@ -1,7 +1,7 @@
-import { ThemeProvider } from "@emotion/react";
-import "./App.css";
-import Board from "./pages/Boards/_id";
-import theme from "~/theme";
+import { ThemeProvider } from "@emotion/react"
+import "./App.css"
+import Board from "./pages/Boards/_id"
+import theme from "~/theme"
 function App() {
   return (
     <>
@@ -9,7 +9,7 @@ function App() {
         <Board />
       </ThemeProvider>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

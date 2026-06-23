@@ -1,30 +1,66 @@
 import {
   SortableContext,
   horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { NoteAddOutlined } from "@mui/icons-material";
-import { Box, Button, TextField } from "@mui/material";
+} from "@dnd-kit/sortable"
+import { NoteAddOutlined } from "@mui/icons-material"
+import CloseIcon from "@mui/icons-material/Close"
+import { Box, Button, TextField } from "@mui/material"
+import { useCallback, useState } from "react"
+import { useSelector } from "react-redux"
+import { toast } from "react-toastify"
 
-import CloseIcon from "@mui/icons-material/Close";
-import { useState } from "react";
-import Columns from "~/pages/Boards/BoardConent/ListColumns/Columns/Columns";
-export const ListColumns = ({ columns }) => {
-  const [openNewColumn, setOpenNewColumn] = useState(false);
-  const [newColumnTitle, setNewColumnTitle] = useState("");
-  const toggleOpen = () => setOpenNewColumn(!openNewColumn);
+import Columns from "~/pages/Boards/BoardConent/ListColumns/Columns/Columns"
+export const ListColumns = ({ columns, createNewColumn, createNewCard }) => {
+  // const columns = board?.columns
 
-  const handleAddColumn = () => {
+  const [openNewColumn, setOpenNewColumn] = useState(false)
+  const [newColumnTitle, setNewColumnTitle] = useState("")
+  const toggleOpen = () => setOpenNewColumn(!openNewColumn)
+
+  const boardId = useSelector((state) => {
+    return state.board.boardId
+  })
+
+  const handleAddColumn = async () => {
     if (!newColumnTitle) {
-      return;
+      toast.error("Please enter Column Title", {
+        position: "bottom-right",
+        autoClose: 2000,
+      })
+      return
     }
-    console.log(newColumnTitle);
-    toggleOpen();
-    setNewColumnTitle("");
-  };
+    const data = {
+      boardId: boardId,
+      title: newColumnTitle,
+    }
+
+    try {
+      await createNewColumn(data)
+      setNewColumnTitle("")
+      toggleOpen()
+    } catch (error) {
+      // await dispatch(refreshDataBoard(boardId))
+      toast.error("Failed to create column. Please try again.", {})
+    }
+  }
+
+  // const createNewColumn = async (newColumn) => {
+  //   const response = await createNewColumnAPI(newColumn)
+  //   if (response.statusCode === 201) {
+  //     toast.success(response.message, {
+  //       position: "bottom-right",
+  //     })
+  //   }
+  //   return response
+  // }
+
+  const handleChangeTitle = useCallback((e) => {
+    setNewColumnTitle(e.target.value)
+  }, [])
 
   return (
     <SortableContext
-      items={columns?.map((item) => item._id)}
+      items={columns?.map((item) => item?._id)}
       strategy={horizontalListSortingStrategy}
     >
       <Box
@@ -41,7 +77,11 @@ export const ListColumns = ({ columns }) => {
         }}
       >
         {columns?.map((column) => (
-          <Columns key={column._id} column={column} />
+          <Columns
+            key={column?._id}
+            column={column}
+            createNewCard={createNewCard}
+          />
         ))}
 
         {/* box and new column */}
@@ -90,7 +130,7 @@ export const ListColumns = ({ columns }) => {
               autoFocus
               type="text"
               size="small"
-              onChange={(e) => setNewColumnTitle(e.target.value)}
+              onChange={(e) => handleChangeTitle(e)}
               sx={{
                 width: "100%",
                 marginBottom: 1,
@@ -146,5 +186,5 @@ export const ListColumns = ({ columns }) => {
         )}
       </Box>
     </SortableContext>
-  );
-};
+  )
+}
