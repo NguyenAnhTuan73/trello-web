@@ -6,9 +6,9 @@ export function mapOrder(list, order, key) {
 }
 export const generatePlaceholderCard = (column) => {
   return {
-    _id: `${column._id}-placeholder-card`,
-    boardId: column.boardId,
-    columnId: column._id,
+    _id: `${column?._id}-placeholder-card`,
+    boardId: column?.boardId,
+    columnId: column?._id,
     Fe_PlaceholderCard: true,
   };
 };

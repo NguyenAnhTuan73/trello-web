@@ -8,16 +8,26 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { Provider } from "react-redux"
 import { store } from "~/app/store.js"
+import { ConfirmProvider } from "material-ui-confirm"
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <Provider store={store}>
-      <CssVarsProvider theme={theme} defaultMode="system">
-        <CssBaseline />
+      <ConfirmProvider defaultOptions={{
+        allowClose: false,
+        confirmationText: "Delete",
+      cancellationText: "Cancel",
+      confirmationButtonProps: {
+        color: "error",
+      },
+      }}>
+        <CssVarsProvider theme={theme} defaultMode="system">
+          <CssBaseline />
 
-        <App />
-        <ToastContainer />
-      </CssVarsProvider>
+          <App />
+          <ToastContainer />
+        </CssVarsProvider>
+      </ConfirmProvider>
     </Provider>
   </StrictMode>,
 )

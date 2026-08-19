@@ -1,16 +1,13 @@
-import {
-  SortableContext,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { Box } from "@mui/material";
-import { CardItem } from "~/pages/Boards/BoardConent/ListColumns/Columns/ListCards/Card/CardItem";
-import theme from "~/theme";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable"
+import { Box } from "@mui/material"
+import { CardItem } from "~/pages/Boards/BoardConent/ListColumns/Columns/ListCards/Card/CardItem"
+import theme from "~/theme"
 
 export const ListCards = ({ cards }) => {
   return (
     <>
       <SortableContext
-        items={cards?.map((item) => item._id)}
+        items={cards?.map((item) => item?._id)}
         strategy={verticalListSortingStrategy}
       >
         <Box
@@ -36,10 +33,10 @@ export const ListCards = ({ cards }) => {
           }}
         >
           {cards?.map((card) => (
-            <CardItem key={card._id} card={card} />
+            <CardItem key={card?._id} card={card} />
           ))}
         </Box>
       </SortableContext>
     </>
-  );
-};
+  )
+}

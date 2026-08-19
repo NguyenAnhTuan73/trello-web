@@ -10,7 +10,12 @@ import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
 
 import Columns from "~/pages/Boards/BoardConent/ListColumns/Columns/Columns"
-export const ListColumns = ({ columns, createNewColumn, createNewCard }) => {
+export const ListColumns = ({
+  columns,
+  createNewColumn,
+  createNewCard,
+  handleDeleteColumn ,
+}) => {
   // const columns = board?.columns
 
   const [openNewColumn, setOpenNewColumn] = useState(false)
@@ -21,7 +26,7 @@ export const ListColumns = ({ columns, createNewColumn, createNewCard }) => {
     return state.board.boardId
   })
 
-  const handleAddColumn = async () => {
+  const handleAddColumn = () => {
     if (!newColumnTitle) {
       toast.error("Please enter Column Title", {
         position: "bottom-right",
@@ -35,7 +40,7 @@ export const ListColumns = ({ columns, createNewColumn, createNewCard }) => {
     }
 
     try {
-      await createNewColumn(data)
+      createNewColumn(data)
       setNewColumnTitle("")
       toggleOpen()
     } catch (error) {
@@ -81,6 +86,7 @@ export const ListColumns = ({ columns, createNewColumn, createNewCard }) => {
             key={column?._id}
             column={column}
             createNewCard={createNewCard}
+            handleDeleteColumn={handleDeleteColumn}
           />
         ))}
 

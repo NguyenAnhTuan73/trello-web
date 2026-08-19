@@ -24,16 +24,16 @@ import {
 } from "@mui/material"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
+import { useConfirm } from "material-ui-confirm"
 import { useCallback, useState } from "react"
 import { useSelector } from "react-redux"
 import { toast } from "react-toastify"
-import { createNewCardAPI } from "~/apis/cards"
 import { ListCards } from "~/pages/Boards/BoardConent/ListColumns/Columns/ListCards/ListCards"
 
-const Columns = ({ column, createNewCard }) => {
+const Columns = ({ column, createNewCard , handleDeleteColumn}) => {
   const [anchorEl, setAnchorEl] = useState(null)
-  const [orderedCards, setOrderedCards] = useState(column?.cards || [])
-
+  const orderedCards = column?.cards
+  const confirmDeleteColumn = useConfirm()
   const {
     attributes,
     listeners,
@@ -55,15 +55,12 @@ const Columns = ({ column, createNewCard }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
 
   const [openNewCard, setOpenNewCard] = useState(false)
   const [newCardTitle, setNewCardTitle] = useState("")
   const handleToggleOpenCard = () => setOpenNewCard(!openNewCard)
 
-  const handleAddCard = async () => {
+  const handleAddCard = () => {
     if (!newCardTitle) {
       toast.error("Please enter Card Title!", {
         position: "bottom-right",
@@ -74,12 +71,12 @@ const Columns = ({ column, createNewCard }) => {
     }
     const dataNewCard = {
       title: newCardTitle,
-      columnId: column._id,
+      columnId: column?._id,
       boardId: boardId,
     }
 
     try {
-      await createNewCard(dataNewCard)
+      createNewCard(dataNewCard)
       handleToggleOpenCard()
 
       setNewCardTitle("")
@@ -99,6 +96,25 @@ const Columns = ({ column, createNewCard }) => {
   const handleChangeTitle = useCallback((e) => {
     setNewCardTitle(e.target.value)
   }, [])
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const handleOpenDialog = async () => {
+    const { confirmed, reason } = await confirmDeleteColumn({
+      title: "Delete Column",
+      description: "Are you sure you want to delete this column?",
+      confirmationText: "Delete",
+      
+    })
+
+    if (confirmed) {
+      handleDeleteColumn(column?._id)
+      
+      /* ... */
+    }
+    // Implement delete column logic here
+  }
 
   return (
     <div ref={setNodeRef} style={dndKitStyles} {...attributes}>
@@ -121,6 +137,7 @@ const Columns = ({ column, createNewCard }) => {
             p: 2,
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <Typography
@@ -149,15 +166,24 @@ const Columns = ({ column, createNewCard }) => {
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
+              onClick={handleClose}
               slotProps={{
                 list: {
                   "aria-labelledby": "basic-column-dropdown",
                 },
               }}
             >
-              <MenuItem onClick={handleClose}>
+              <MenuItem
+                sx={{
+                  "&:hover": {
+                    color: "success.light",
+                    "& .addCardIcon": { color: "success.light" },
+                  },
+                }}
+                onClick={handleToggleOpenCard}
+              >
                 <ListItemIcon>
-                  <AddCardIcon fontSize="small" />
+                  <AddCardIcon className="addCardIcon" fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Add new card</ListItemText>
                 <Typography
@@ -197,11 +223,22 @@ const Columns = ({ column, createNewCard }) => {
               </MenuItem>
 
               <Divider />
-              <MenuItem onClick={handleClose}>
+              <MenuItem
+                onClick={handleOpenDialog}
+                sx={{
+                  "&:hover": {
+                    color: "warning.dark",
+                    "& .deleteForeverIcon": { color: "warning.dark" },
+                  },
+                }}
+              >
                 <ListItemIcon>
-                  <DeleteForeverIcon fontSize="small" />
+                  <DeleteForeverIcon
+                    className="deleteForeverIcon"
+                    fontSize="small"
+                  />
                 </ListItemIcon>
-                <ListItemText>Remove this column </ListItemText>
+                <ListItemText>Delete this column </ListItemText>
               </MenuItem>
               <MenuItem onClick={handleClose}>
                 <ListItemIcon>

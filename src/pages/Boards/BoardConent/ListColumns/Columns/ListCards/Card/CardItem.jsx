@@ -5,12 +5,12 @@ import {
   CardContent,
   CardMedia,
   Typography,
-} from "@mui/material";
-import GroupIcon from "@mui/icons-material/Group";
-import CommentIcon from "@mui/icons-material/Comment";
-import AttachmentIcon from "@mui/icons-material/Attachment";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
+} from "@mui/material"
+import GroupIcon from "@mui/icons-material/Group"
+import CommentIcon from "@mui/icons-material/Comment"
+import AttachmentIcon from "@mui/icons-material/Attachment"
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 export const CardItem = ({ card }) => {
   const {
     attributes,
@@ -19,7 +19,7 @@ export const CardItem = ({ card }) => {
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: card._id, data: { ...card } });
+  } = useSortable({ id: card?._id, data: { ...card } })
 
   const dndKitCardStyles = {
     transform: CSS.Translate.toString(transform),
@@ -27,7 +27,7 @@ export const CardItem = ({ card }) => {
     opacity: isDragging ? 0.5 : undefined,
     border: isDragging ? "1px solid #1976d2" : undefined,
     // touchAction: "none",
-  };
+  }
   return (
     <>
       <Card
@@ -44,7 +44,7 @@ export const CardItem = ({ card }) => {
           "&:hover": { borderColor: "primary.secondary" },
         }}
       >
-        {card.cover && (
+        {card?.cover && (
           <CardMedia
             sx={{ height: 140 }}
             image="https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg"
@@ -52,9 +52,9 @@ export const CardItem = ({ card }) => {
           />
         )}
         <CardContent sx={{ p: 1.5, "&:last-child": { p: 1.5 } }}>
-          <Typography>{card.title}</Typography>
+          <Typography>{card?.title}</Typography>
         </CardContent>
-        {card.comments?.length > 0 && (
+        {card?.comments?.length > 0 && (
           <CardActions sx={{ p: "0 4px 8px 4px" }}>
             <Button size="small" startIcon={<GroupIcon />}>
               20
@@ -69,5 +69,5 @@ export const CardItem = ({ card }) => {
         )}
       </Card>
     </>
-  );
-};
+  )
+}
